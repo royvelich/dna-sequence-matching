@@ -1,0 +1,22 @@
+name: dna-sequence-matching
+channels:
+  - conda-forge
+  - nvidia
+  - pytorch
+  - sebp
+  - anaconda
+  - defaults
+dependencies:
+  - python=3.10
+  - ipython
+  - numpy
+  - scipy
+  - scikit-learn
+  - scikit-image
+  - jupyter
+  - jupyterlab
+  - matplotlib
+  - pandas
+  - plotly
+  - pip
+  - openpyxl
