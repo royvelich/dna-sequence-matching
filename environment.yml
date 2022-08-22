@@ -20,3 +20,5 @@ dependencies:
   - plotly
   - pip
   - openpyxl
+  - biopython
+  - pygtrie
