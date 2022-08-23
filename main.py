@@ -74,38 +74,46 @@ def dye_chromosome(chromosome: Bio.SeqRecord.SeqRecord, fluorochrome: str):
     return indices, fragment
 
 
-def plot_fragments(full_fragment, partial_fragment, sampled_partial_fragment, matched_fragment):
-    plt.figure(figsize=(40, 2))
-    y1 = numpy.zeros_like(full_fragment)
-    x1 = full_fragment
-    plt.plot(x1, y1, 'o', markersize=2)
+def plot_fragment(fragment, color, markersize=2):
+    y = numpy.zeros_like(fragment)
+    x = fragment
+    plt.plot(x, y, 'o', markersize=markersize, markerfacecolor=color, markeredgecolor=color)
 
-    y2 = numpy.zeros_like(partial_fragment)
-    x2 = partial_fragment
-    plt.plot(x2, y2, 'o', markersize=2, markerfacecolor='red', markeredgecolor='red')
+
+def plot_fragments(full_fragment, partial_fragment, sampled_partial_fragment, transformed_sampled_partial_fragment, transformed_noised_sampled_partial_fragment, matched_fragment, x_dist, y_dist):
+    plt.figure(figsize=(40, 2))
+    plot_fragment(fragment=full_fragment, color='blue')
+    plot_fragment(fragment=partial_fragment, color='red')
+    plt.xlim(0, 1)
+    plt.show()
 
     # y3 = numpy.zeros_like(sampled_partial_fragment)
     # x3 = sampled_partial_fragment
     # plt.plot(x3, y3, 'o', markersize=2, markerfacecolor='green', markeredgecolor='green')
+
+
+    plt.figure(figsize=(40, 2))
+    plot_fragment(fragment=sampled_partial_fragment, color='green')
     plt.xlim(0, 1)
     plt.show()
 
     plt.figure(figsize=(40, 2))
-    y3 = numpy.zeros_like(sampled_partial_fragment)
-    x3 = sampled_partial_fragment
-    plt.plot(x3, y3, 'o', markersize=2, markerfacecolor='green', markeredgecolor='green')
+    plot_fragment(fragment=transformed_sampled_partial_fragment, color='magenta')
     plt.xlim(0, 1)
     plt.show()
 
     plt.figure(figsize=(40, 2))
-    y4 = numpy.zeros_like(matched_fragment)
-    x4 = matched_fragment
-    plt.plot(x4, y4, 'o', markersize=2, markerfacecolor='purple', markeredgecolor='purple')
+    plot_fragment(fragment=transformed_noised_sampled_partial_fragment, color='orange')
+    plt.xlim(0, 1)
+    plt.show()
+
+    plt.figure(figsize=(40, 2))
+    plot_fragment(fragment=matched_fragment, color='purple')
     plt.xlim(0, 1)
     plt.show()
 
     plt.figure(figsize=(40, 10))
-    plt.plot(x_pos, y_dist, '-', markersize=2)
+    plt.plot(x_dist, y_dist, '-', markersize=2)
     plt.xlim(0, 1)
 
 
@@ -156,7 +164,7 @@ if __name__ == '__main__':
         print(f'full fragment length: {full_fragment.shape[0]}')
         print(f'partial fragment length: {transformed_sampled_partial_fragment.shape[0]}')
 
-        matched_indices, x_pos, y_dist = match_fragments(full_fragment=full_fragment, partial_fragment=transformed_noised_sampled_partial_fragment)
+        matched_indices, x_dist, y_dist = match_fragments(full_fragment=full_fragment, partial_fragment=transformed_noised_sampled_partial_fragment)
         matched_fragment = full_fragment[matched_indices]
 
         print(f'matched indices: {matched_indices}')
@@ -169,4 +177,14 @@ if __name__ == '__main__':
         else:
             matching_ratio = 1 - (indices_diff / indices_count)
             print(f'matching_ratio: {matching_ratio}')
+
+        plot_fragments(
+            full_fragment=full_fragment,
+            partial_fragment=partial_fragment,
+            sampled_partial_fragment=sampled_partial_fragment,
+            transformed_sampled_partial_fragment=transformed_sampled_partial_fragment,
+            transformed_noised_sampled_partial_fragment=transformed_noised_sampled_partial_fragment,
+            matched_fragment=matched_fragment,
+            x_dist=x_dist,
+            y_dist=y_dist)
 
